@@ -5,9 +5,9 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts//utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract AuctionContract is ReentrancyGuard, Ownable {
+
+contract Auction is ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     error  LendPoolAddressAlreadySet();
@@ -28,7 +28,7 @@ contract AuctionContract is ReentrancyGuard, Ownable {
     event BidPlaced(uint256 auctionId, address bidder, uint256 amount);
     event AuctionEnded(uint256 auctionId, address winner, uint256 amount);
 
-    constructor(address _lendingContract address _initialOwner) Ownable(_initialOwner){
+    constructor(address _lendingContract) {
         if(_lendingContract == address(0)) revert LendPoolAddressAlreadySet();
         lendingContract = _lendingContract;
     }
@@ -92,8 +92,5 @@ contract AuctionContract is ReentrancyGuard, Ownable {
         emit AuctionEnded(_auctionId, auction.highestBidder, auction.highestBid);
     }
 
-     function withdraw(address to, uint256 amount) external onlyOwner{
-
-      (bool success, ) = to.call{value: amount}("");
-     }
+    
 }
