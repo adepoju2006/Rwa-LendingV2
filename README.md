@@ -1,13 +1,33 @@
-## Foundry
+## DCC Rwa Lending Contract
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+**how does it work?.**
 
-Foundry consists of:
+This is a Lending platform whereby the Borrower Request for a Loan using `createLoan` function and will automatically put down his Collateral Token which could be `RWA Asset or ERC20 Token`, then the Lender use the `approveLoan` function to approve the Loan and send the Token also could be `RWA Asset or ERC20 Token`  intended to Lend to the Borrower. There is a Period of time the Borrower have to repay  the Loan which was setUp by the platform and also there is a `liquidationThreshold` and `interestRate` set by the Platform.
 
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
+**Actors**
+1. Borrowers: he will be requesting for Loan by putting down Collateral
+2. Lenders: wil be Giving out Loan.
+
+**Features**
+1. Creation of Loan
+2. Approval of Loan
+3. Repayment of Loan
+4. Liquidation of Loan
+5. Auction Market for the Liquidated Position.
+
+**how does the Liquidation work**
+There are two ways a Position could be Liquidated which are:
+1. if the Time given to repay Elapses
+2. if the Position is Undercollateralized the Position is Liquidated.
+
+**Aution Market**
+The auction Market begins once a particular Position is Liquidated the Collateral of the Liquidated Position will be sent to the `AuctionContract` contract and there will be a Bidding process from the Bidders and the Highest Bidder take the Collateral after the end of the auction. 
+
+**Stack**
+1. Foundry framework
+2. openzeppelin library
+3. orochi-network library
+ 
 
 ## Documentation
 

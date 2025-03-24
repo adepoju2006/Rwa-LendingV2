@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 import {Test, console} from "forge-std/Test.sol";
 import {Script} from "forge-std/Script.sol";
 import {DCCRwaLending} from "../src/LendPool.sol";
-import {AuctionContract} from "../src/Auction.sol";
+import "../src/Auction.sol";
 import {BorrowedERC20Token} from "../src/mocks/BorrowedToken.sol";
 import {CollateralERC20Token} from "../src/mocks/CollateralToken.sol";
 
@@ -27,11 +27,11 @@ enum AssetType {
 
     function setUp() public {
         dccRwaLending = new DCCRwaLending(
-            oracle, 
+            Oracle, 
             liquidationThreshold,
             address(this)
         );
-        auction = new Auction(address(dccRwaLending));
+        auction = new AuctionContract(address(dccRwaLending));
         borrowedERC20Token = new BorrowedERC20Token(LENDER, LenderBalance);
         collateralERC20Token = new CollateralERC20Token(BORROWER, BorrowerBalance);
 

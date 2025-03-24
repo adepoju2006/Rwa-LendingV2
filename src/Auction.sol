@@ -7,7 +7,7 @@ import "@openzeppelin/contracts//utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
 
-contract Auction is ReentrancyGuard {
+contract AuctionContract is ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     error  LendPoolAddressAlreadySet();
