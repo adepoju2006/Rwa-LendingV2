@@ -6,11 +6,10 @@ import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts//utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 
-
 contract AuctionContract is ReentrancyGuard {
     using SafeERC20 for IERC20;
 
-    error  LendPoolAddressAlreadySet();
+    error LendPoolAddressAlreadySet();
 
     struct Auction {
         address collateralAddress;
@@ -29,16 +28,16 @@ contract AuctionContract is ReentrancyGuard {
     event AuctionEnded(uint256 auctionId, address winner, uint256 amount);
 
     constructor(address _lendingContract) {
-        if(_lendingContract == address(0)) revert LendPoolAddressAlreadySet();
+        if (_lendingContract == address(0)) revert LendPoolAddressAlreadySet();
         lendingContract = _lendingContract;
     }
 
-
-   function setLendPoolAddress(address _lendPoolContract) external {
+    function setLendPoolAddress(address _lendPoolContract) external {
         // require(l_endPoolContract == address(0), "LendPool address already set");
-        if(_lendPoolContract == address(0)) revert LendPoolAddressAlreadySet();
+        if (_lendPoolContract == address(0)) revert LendPoolAddressAlreadySet();
         lendingContract = _lendPoolContract;
     }
+
     function startAuction(address _collateralAddress, uint256 _collateralId) external {
         require(msg.sender == lendingContract, "Only lending contract can start auctions");
 
@@ -68,8 +67,6 @@ contract AuctionContract is ReentrancyGuard {
             payable(auction.highestBidder).transfer(auction.highestBid);
         }
 
-        
-
         emit BidPlaced(_auctionId, msg.sender, msg.value);
     }
 
@@ -91,6 +88,4 @@ contract AuctionContract is ReentrancyGuard {
         auction.isActive = false;
         emit AuctionEnded(_auctionId, auction.highestBidder, auction.highestBid);
     }
-
-    
 }
