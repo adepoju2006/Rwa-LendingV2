@@ -10,6 +10,7 @@ contract AuctionContract is ReentrancyGuard {
     using SafeERC20 for IERC20;
 
     error LendPoolAddressAlreadySet();
+    error zeroAddress();
 
     struct Auction {
         address collateralAddress;
@@ -28,15 +29,16 @@ contract AuctionContract is ReentrancyGuard {
     event AuctionEnded(uint256 auctionId, address winner, uint256 amount);
 
     constructor(address _lendingContract) {
-        if (_lendingContract == address(0)) revert LendPoolAddressAlreadySet();
+        if (_lendingContract == address(0)) revert zeroAddress();
         lendingContract = _lendingContract;
     }
 
-    function setLendPoolAddress(address _lendPoolContract) external {
-        // require(l_endPoolContract == address(0), "LendPool address already set");
-        if (_lendPoolContract == address(0)) revert LendPoolAddressAlreadySet();
-        lendingContract = _lendPoolContract;
-    }
+//     function setLendPoolAddress(address _lendPoolContract) external {
+//         // require(l_endPoolContract == address(0), "LendPool address already set");
+// //if (lendingContract != address(0)) revert LendPoolAddressAlreadySet();
+//          if (_lendPoolContract == address(0)) revert zeroAddress();
+//         lendingContract = _lendPoolContract;
+//     }
 
     function startAuction(address _collateralAddress, uint256 _collateralId) external {
         require(msg.sender == lendingContract, "Only lending contract can start auctions");
@@ -58,15 +60,16 @@ contract AuctionContract is ReentrancyGuard {
         require(auction.isActive, "Auction is not active");
         require(msg.value > auction.highestBid, "Bid must be higher than current bid");
 
-        // Update highest bidder and bid
-        auction.highestBidder = msg.sender;
-        auction.highestBid = msg.value;
-
-        // Refund the previous highest bidder
+  // Refund the previous highest bidder
         if (auction.highestBidder != address(0)) {
             payable(auction.highestBidder).transfer(auction.highestBid);
         }
 
+        // Update highest bidder and bid
+        auction.highestBidder = msg.sender;
+        auction.highestBid = msg.value;
+
+      
         emit BidPlaced(_auctionId, msg.sender, msg.value);
     }
 
