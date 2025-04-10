@@ -64,8 +64,8 @@ contract DCCRwaLending is ReentrancyGuard, Ownable {
     event CollateralSentToAuction(uint256 loanId, address collateralAddress, uint256 collateralId);
 
     constructor(address _oracle, uint256 _liquidationThreshold, address initialOwner) Ownable(initialOwner) {
-        oracleAddress = _oracle;
-        oracle = IOrocleAggregatorV2(oracleAddress);
+      //  oracleAddress = _oracle;
+        oracle = IOrocleAggregatorV2(_oracle);
         liquidationThreshold = _liquidationThreshold; // 150 for 150%
     }
 
